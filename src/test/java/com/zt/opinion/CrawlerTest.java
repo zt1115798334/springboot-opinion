@@ -14,13 +14,6 @@ import java.util.Map;
  */
 public class CrawlerTest {
 
-    private String url ="http://icp.chinaz.com/searchs";
-    private String charset = "utf-8";
-
-    @Test
-    public void testGet(){
-        System.out.println(WebsiteUtil.pickGetData(url));
-    }
 
     @Test
     public void testPost(){
@@ -29,17 +22,11 @@ public class CrawlerTest {
                 "www.mi.com",
                 "www.meizu.com",
                 "www.jd.com",
-                "www.tmall.com");
-        StringBuilder sb = new StringBuilder();
-        urlList.stream().forEach( item ->{
-            sb.append(item);
-            sb.append(System.lineSeparator());
-        });
-        Map<String, String> map = Maps.newHashMap();
-        map.put("urls",sb.toString());
-        map.put("btn_search","查询");
-        String html = WebsiteUtil.pickPostData(url,map,charset);
-        List<String> siteName = WebsiteUtil.analyzeHTMLByString(html);
+                "www.tmall.com","www.baiduxiaxiaoxiao.com");
+        List<String> siteName = WebsiteUtil.getWebSiteName(urlList);
         siteName.forEach(System.out::println);
+
+//        String site = WebsiteUtil.getWebSiteName("www.baiduxiaxiaoxiao.com");
+//        System.out.println(site);
     }
 }
