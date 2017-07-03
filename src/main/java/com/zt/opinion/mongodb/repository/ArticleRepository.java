@@ -13,4 +13,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface ArticleRepository extends MongoRepository<Article, String> {
 
+    Article findByUrlMD5(String urlMD5);
 }

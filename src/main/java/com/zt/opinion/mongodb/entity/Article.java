@@ -3,6 +3,7 @@ package com.zt.opinion.mongodb.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.zt.opinion.base.entity.BasePageRequest;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -17,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @date 2017年6月23日
  */
 @Document(collection = "article")
-public class Article implements Serializable {
+public class Article  extends BasePageRequest implements Serializable {
 
 	/**
 	 * 
