@@ -20,7 +20,6 @@ public abstract class DataStoreFactory<T> {
 
 	private boolean toEnsureIndexes = false; // 是否确认索引存在，默认false
 	private boolean toEnsureCaps = false; // 是否确认caps存在，默认false
-	protected Datastore datastore;
 
 	private Morphia morphia;
 

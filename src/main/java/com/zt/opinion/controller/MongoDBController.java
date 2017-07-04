@@ -3,8 +3,10 @@ package com.zt.opinion.controller;
 import java.util.List;
 
 import com.zt.opinion.base.controller.BaseController;
+import com.zt.opinion.base.entity.PageResult;
 import com.zt.opinion.framework.beans.AjaxResult;
 import com.zt.opinion.mongodb.entity.Article;
+import com.zt.opinion.mongodb.entity.ArticleMorphia;
 import com.zt.opinion.mongodb.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,5 +77,60 @@ public class MongoDBController extends BaseController {
 		articleService.update(article);
 		return success("更新成功");
 	}
-	
+	/**
+	 *
+	 * <p>Description: 保存文章信息Morphia</p>
+	 * @param entity
+	 * @return
+	 * @author zhangtong
+	 * @date 2017年6月30日
+	 */
+	@RequestMapping("addArticleMorphia")
+	@ResponseBody
+	public AjaxResult addArticleMorphia(@RequestBody ArticleMorphia entity){
+		articleService.addArticleMorphia(entity);
+		return success("保存文章信息成功");
+	}
+
+	/**
+	 *
+	 * <p>Description: 删除文章信息Morphia</p>
+	 * @param entity
+	 * @author zhangtong
+	 * @date 2017年6月30日
+	 */
+	@RequestMapping("delArticleMorphia")
+	@ResponseBody
+	public AjaxResult delArticleMorphia(@RequestBody ArticleMorphia entity){
+		articleService.delArticleMorphia(entity);
+		return success("删除文章信息成功");
+	}
+
+	/**
+	 *
+	 * <p>Description: 更新文章信息Morphia</p>
+	 * @param entity
+	 * @author zhangtong
+	 * @date 2017年6月30日
+	 */
+	@RequestMapping("updateArticleMorphia")
+	@ResponseBody
+	public AjaxResult updateArticleMorphia(@RequestBody ArticleMorphia entity){
+		articleService.updateArticleMorphia(entity);
+		return success("更新文章信息成功");
+	}
+	/**
+	 *
+	 * <p>Description: 分页查询显示文章信息Morphia</p>
+	 * @param articleMorphia
+	 * @return
+	 * @author zhangtong
+	 * @date 2017年6月30日
+	 */
+	@RequestMapping("articleMorphiaTest")
+	@ResponseBody
+	public AjaxResult articleMorphiaTest(@RequestBody ArticleMorphia articleMorphia){
+		PageResult<ArticleMorphia> page = articleService.getArticleMorphiaByEntity(articleMorphia);
+		return success(page);
+	}
 }

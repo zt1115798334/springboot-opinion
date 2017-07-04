@@ -1,4 +1,4 @@
-package com.zt.opinion.jms;
+package com.zt.opinion;
 
 import java.util.Map;
 
