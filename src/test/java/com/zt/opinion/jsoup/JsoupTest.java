@@ -1,15 +1,16 @@
 package com.zt.opinion.jsoup;
 
-import com.google.common.collect.Collections2;
 import com.zt.opinion.entity.Group;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.Test;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by zhangtong on 2017/7/4.
@@ -40,9 +41,16 @@ public class JsoupTest {
 
     @Test
     public void test4(){
+        List<Group> list = null;
         Group group = new Group();
+//        list.add(group);
         System.out.println(group==null);
+        System.out.println(CollectionUtils.isEmpty(list));
         System.out.println(StringUtils.isNotBlank(" "));
         System.out.println(StringUtils.isNotEmpty(" "));
+
+        System.out.println(com.zt.opinion.utils.StringUtils.getWebsiteUrl("http://www.cnblogs.com/pengyingh/"));
+
+        System.out.println("0d46a8e4d38835fa8f86444fefc8dfe8".length());
     }
 }

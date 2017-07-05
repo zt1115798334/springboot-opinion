@@ -6,6 +6,7 @@ import java.util.Date;
 import com.zt.opinion.base.entity.BasePageRequest;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -21,34 +22,57 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Article  extends BasePageRequest implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 9201034849892179274L;
 	@Id
 	@Indexed(unique=true)
 	private String id;
+
 	@Field("title")
 	private String title;// 标题
+
 	@Field("media")
 	private String media;// 媒体名称
+
+	@Field("mediaType")
+	private String mediaType;	//媒体类型
+
 	@Field("content")
 	private String content;// 内容
+
 	@Field("emotion")
 	private String emotion;// 情感
-	@Field("publishDateTime")
+
+	@Field("publish_datetime")
 	private Date publishDateTime;// 发布日期时间
-	@Field("publishDate")
+
+	@Field("publish_date")
 	private String publishDate;// 发布日期
+
 	@Field("hot")
 	private Integer hot;// 热度
+
 	@Field("author")
 	private String author;// 作者
+
 	@Field("keywords")
 	private String keywords;// 关键词
+
 	@Field("url")
 	private String url;// 原文链接
-	@Field("urlMD5")
+
+	@Field("url_md5")
 	private String urlMD5;// url的MD5值
+
+	@Field("crawler_date")
+	private String crawlerDate;// 采集时间，格式：yyyy-MM-dd
+
+	@Field("crawler_datetime")
+	private Date crawlerDateTime;// 采集时间
+
+	@Transient
+	private String brief;// 内容摘要
 
 	public String getId() {
 		return id;
@@ -72,6 +96,14 @@ public class Article  extends BasePageRequest implements Serializable {
 
 	public void setMedia(String media) {
 		this.media = media;
+	}
+
+	public String getMediaType() {
+		return mediaType;
+	}
+
+	public void setMediaType(String mediaType) {
+		this.mediaType = mediaType;
 	}
 
 	public String getContent() {
@@ -144,6 +176,30 @@ public class Article  extends BasePageRequest implements Serializable {
 
 	public void setUrlMD5(String urlMD5) {
 		this.urlMD5 = urlMD5;
+	}
+
+	public String getCrawlerDate() {
+		return crawlerDate;
+	}
+
+	public void setCrawlerDate(String crawlerDate) {
+		this.crawlerDate = crawlerDate;
+	}
+
+	public Date getCrawlerDateTime() {
+		return crawlerDateTime;
+	}
+
+	public void setCrawlerDateTime(Date crawlerDateTime) {
+		this.crawlerDateTime = crawlerDateTime;
+	}
+
+	public String getBrief() {
+		return brief;
+	}
+
+	public void setBrief(String brief) {
+		this.brief = brief;
 	}
 
 	@Override

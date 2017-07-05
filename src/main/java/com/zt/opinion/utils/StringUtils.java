@@ -18,7 +18,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zt.opinion.constants.SysConst;
 
-
 /**
  * 
  * <p>Title: StringUtils</p>
@@ -254,4 +253,79 @@ public class StringUtils {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * <p>Description: 生成指定长度的随机字符串</p>
+	 * @param length
+	 * @return
+	 * @author wjc
+	 * @date 2017年2月7日
+	 */
+	public static String getRandomStringByLength(int length) {
+		String base = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		int baseLength = base.length();
+		Random random = new Random();
+		
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < length; i++) {
+			int index = random.nextInt(baseLength);
+			result.append(base.charAt(index));
+		}
+		return result.toString();
+	}
+	
+	/**
+	 * 
+	 * <p>Description: 判断字符串中是否包含乱码，该方法的返回结果仅供参考</p>
+	 * @param str
+	 * @return
+	 * @author Wangjianchun
+	 * @date 2017年6月29日
+	 */
+	public static boolean isContainMessyCode(String str){
+		if(isEmpty(str)){
+			return false;
+		}
+		return (str.indexOf("��") != -1);
+	}
+	
+	/**
+	 * 
+	 * <p>Description: 判断str表示的是否一个url</p>
+	 * @param str
+	 * @return
+	 * @author Wangjianchun
+	 * @date 2017年6月29日
+	 */
+	public static boolean isUrl(String str){
+		if(StringUtils.isEmpty(str)){
+			return false;
+		}
+		boolean result = (str.endsWith(".com") || str.endsWith(".cn")
+				|| str.endsWith(".org") || str.endsWith(".net"));
+		return result;
+	}
+	
+	/**
+	 * 
+	 * <p>Description: 根据文章的url获取文章所在网站的url</p>
+	 * @param url
+	 * @return
+	 * @author Wangjianchun
+	 * @date 2017年7月3日
+	 */
+	public static String getWebsiteUrl(String url){
+		String result = "";
+		if(isEmpty(url)){
+			return result;
+		}
+		int index = url.indexOf("://");
+		if(index != -1){
+			result = url.substring(0, url.indexOf("/", index+3));
+		}else{
+			result = url.substring(0, url.indexOf("/"));
+		}
+		return result;
+	}
+
 }
