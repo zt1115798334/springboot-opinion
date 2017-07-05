@@ -2,13 +2,10 @@ package com.zt.opinion.controller;
 
 import com.google.common.collect.Lists;
 import com.zt.opinion.base.controller.BaseController;
-
 import com.zt.opinion.framework.beans.AjaxResult;
 import com.zt.opinion.mongodb.entity.Article;
 import com.zt.opinion.mongodb.service.ArticleService;
 import com.zt.opinion.utils.ExcelImporter;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -42,62 +39,62 @@ public class ExcelController extends BaseController {
 			String fileName = file.getOriginalFilename();
 			String fieldName = file.getName();//表单中file字段的id
 			logger.info("fileName: {}, fieldName: {}", fileName, fieldName);
-			
-			if(!isExcel(fileName)){
+
+			if (!isExcel(fileName)) {
 				return fail("导入文件必须为excel文件，请重新上传文件");
 			}
 
 //			importUserList(fileName, file.getInputStream());
-			
+
 			return success("导入成功");
 		} catch (Exception e) {
 			logger.error("批量添加企业出错，异常信息：{}", e);
 		}
 		return fail("批量添加企业失败，请联系管理员解决");
 	}
-	
+
 	/**
-	 * 
 	 * <p>Description: 根据文件名判断该文件是否是excel文件</p>
+	 *
 	 * @param fileName
 	 * @return
 	 * @author wjc
 	 * @date 2017年1月16日
 	 */
-	private boolean isExcel(String fileName){
-		if(fileName == null){
+	private boolean isExcel(String fileName) {
+		if (fileName == null) {
 			return false;
 		}
-		return (fileName.toLowerCase().endsWith(".xlsx") 
+		return (fileName.toLowerCase().endsWith(".xlsx")
 				|| fileName.toLowerCase().endsWith(".xls"));
 	}
 
 	/**
-	 *
 	 * <p>Description: 导入文章列表</p>
+	 *
 	 * @param fileName
 	 * @param fis
 	 * @author wjc
 	 * @date 2017年6月27日
 	 */
-	public void importArticleList(String fileName, InputStream fis){
+	public void importArticleList(String fileName, InputStream fis) {
 		StringBuilder messages = new StringBuilder();
 
 		ExcelImporter importer = new ExcelImporter(fileName);
 		Map<String, Article> map = importer.getArticleList(fis);
-		if(map != null){
+		if (map != null) {
 			List<Article> list = new ArrayList<Article>();
 			StringBuilder message = null;
-			for(Map.Entry<String, Article> entry : map.entrySet()){
+			for (Map.Entry<String, Article> entry : map.entrySet()) {
 				Article item = entry.getValue();
 				message = new StringBuilder();
-				if(articleService.isExist(item.getUrlMD5())){
+				if (articleService.isExist(item.getUrlMD5())) {
 					message.append("url[").append(item.getUrl())
 							.append("]的文章在系统中已经存在，");
 				}
-				if(message.length() < 1){
+				if (message.length() < 1) {
 					list.add(item);
-				}else{
+				} else {
 					messages.append(message);
 				}
 			}
@@ -106,9 +103,9 @@ public class ExcelController extends BaseController {
 			int count = 0;
 			int pageSize = 400;
 			List<List<Article>> newList = splitList(list, pageSize);
-			for(List<Article> subList : newList){
+			for (List<Article> subList : newList) {
 				try {
-					Future<Integer> future = executor.submit(new Callable<Integer>(){
+					Future<Integer> future = executor.submit(new Callable<Integer>() {
 
 						@Override
 						public Integer call() throws Exception {
@@ -133,17 +130,17 @@ public class ExcelController extends BaseController {
 		logger.info("导入结果：{}", messages);
 	}
 
-	private static <T> List<List<T>> splitList(List<T> list, int pageSize){
+	private static <T> List<List<T>> splitList(List<T> list, int pageSize) {
 		List<List<T>> result = new ArrayList<List<T>>();
 		int size = list.size();
 		List<T> subList = new ArrayList<T>();
-		for(int i=0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			T user = list.get(i);
-			if(subList.size() == pageSize){
+			if (subList.size() == pageSize) {
 				result.add(subList);
 				subList = new ArrayList<T>();
 				subList.add(user);
-			}else{
+			} else {
 				subList.add(user);
 			}
 		}
@@ -152,63 +149,26 @@ public class ExcelController extends BaseController {
 		return result;
 	}
 
-		public void traverseFolder(String path) {
+	public void traverseFolder(String path) {
 
-			File file = new File(path);
-			if (file.exists()) {
-				File[] files = file.listFiles();
-				if (files.length == 0) {
-					System.out.println("文件夹是空的!");
-					return ;
-				} else {
-					for (File file2 : files) {
-						if (file2.isDirectory()) {
-							traverseFolder(file2.getAbsolutePath());
-						} else {
-							filaPathList.add(file2.getAbsolutePath());
-						}
+		File file = new File(path);
+		if (file.exists()) {
+			File[] files = file.listFiles();
+			if (files.length == 0) {
+				System.out.println("文件夹是空的!");
+				return;
+			} else {
+				for (File file2 : files) {
+					if (file2.isDirectory()) {
+						traverseFolder(file2.getAbsolutePath());
+					} else {
+						filaPathList.add(file2.getAbsolutePath());
 					}
 				}
-			} else {
-				System.out.println("文件不存在!");
 			}
+		} else {
+			System.out.println("文件不存在!");
 		}
-
-
-	@RequestMapping("test")
-	@ResponseBody
-	public AjaxResult test(){
-		Operation operation = new Operation(articleService);
-		traverseFolder("E:\\采集数据\\供应链金融语科");
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//
-//			}
-//		}).start();
-//		File file = new File(filaPathList.get(1));
-//		String fileName = file.getName();
-//		InputStream is = null;
-//
-//		try {
-//			is = new FileInputStream(file);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		List<Article> list = operation.getReadExcel(fileName,is);
-//		System.out.println("list.s = " + list.size());
-//		Workbook book = null;
-//		try {
-//			book = new XSSFWorkbook(is);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println("book = " + book);
-		Factory factory = new Factory(filaPathList,operation);
-		new Thread(new Producer(factory)).start();
-		new Thread(new Consumer(factory)).start();
-		return success(null);
 	}
+
 }
-
-
