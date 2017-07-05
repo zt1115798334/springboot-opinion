@@ -1,4 +1,4 @@
-package com.zt.opinion.activeMQDemo;
+package com.zt.opinion.mq;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;

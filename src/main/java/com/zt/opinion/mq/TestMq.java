@@ -1,4 +1,4 @@
-package com.zt.opinion.activeMQDemo;
+package com.zt.opinion.mq;
 
 import org.apache.activemq.ActiveMQConnection;
 
@@ -16,6 +16,8 @@ public class TestMq {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
         //Thread 1
         new Thread(testMq.new ProductorMq(producter)).start();
         //Thread 2

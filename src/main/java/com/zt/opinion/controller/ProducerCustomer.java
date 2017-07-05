@@ -1,19 +1,6 @@
 package com.zt.opinion.controller;
 
 
-import com.google.common.collect.Maps;
-import com.zt.opinion.activeMQDemo.Comsumer;
-import com.zt.opinion.activeMQDemo.Producter;
-import com.zt.opinion.mongodb.entity.Article;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-
-import java.io.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by zhangtong on 2017/7/4.
  */
