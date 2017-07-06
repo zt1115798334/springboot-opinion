@@ -41,7 +41,7 @@ public class TestMq {
         public void run() {
             while(true){
                 try {
-                    producter.sendMessage("Jaycekon-MQ","开始测试");
+                    producter.sendMessage("myeq","开始测试");
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
