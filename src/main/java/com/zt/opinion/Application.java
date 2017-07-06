@@ -37,11 +37,11 @@ public class Application {
         return new ActiveMQQueue("myeq");
     }
 
-    @Bean
-    public ActiveMQConnectionFactory connectionFactory() {
-        //此链接信息可放入配置文件中
-        return new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
-    }
+//    @Bean
+//    public ActiveMQConnectionFactory connectionFactory() {
+//        //此链接信息可放入配置文件中
+//        return new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
+//    }
 
     @Bean
     public JmsMessagingTemplate jmsMessagingTemplate(ActiveMQConnectionFactory connectionFactory) {

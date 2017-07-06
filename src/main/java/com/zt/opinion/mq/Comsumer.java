@@ -14,8 +14,8 @@ public class Comsumer {
 
     private static final String PASSWORD = ActiveMQConnection.DEFAULT_PASSWORD;
 
-//    private static final String BROKEN_URL = ActiveMQConnection.DEFAULT_BROKER_URL;
-    private static final String BROKEN_URL = "failover://tcp://localhost:61616";
+    private static final String BROKEN_URL = ActiveMQConnection.DEFAULT_BROKER_URL;
+//    private static final String BROKEN_URL = "failover://tcp://localhost:61616";
     ConnectionFactory connectionFactory;
 
     Connection connection;
