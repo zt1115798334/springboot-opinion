@@ -1,16 +1,10 @@
 package com.zt.opinion.entity;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * <p>Title: Group</p>
@@ -41,56 +35,45 @@ public class Group {
     @Column(name = "create_user", unique = false, nullable = false)
     private String createUser;    //创建用户
 
-
     public Integer getId() {
         return id;
     }
-
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-
     public String getUserAccount() {
         return userAccount;
     }
-
 
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
     }
 
-
     public String getGroupName() {
         return groupName;
     }
-
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
-
     public Date getCreateDate() {
         return createDate;
     }
-
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-
     public String getCreateUser() {
         return createUser;
     }
 
-
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
-
 
     @Override
     public String toString() {

@@ -12,6 +12,7 @@ public class TestConsumer {
         new Thread(testConsumer.new ConsumerMq(comsumer)).start();
         new Thread(testConsumer.new ConsumerMq(comsumer)).start();
         new Thread(testConsumer.new ConsumerMq(comsumer)).start();
+
     }
 
     private class ConsumerMq implements Runnable{
