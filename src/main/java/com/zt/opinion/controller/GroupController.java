@@ -1,7 +1,5 @@
 package com.zt.opinion.controller;
 
-import java.util.List;
-
 import com.zt.opinion.base.controller.BaseController;
 import com.zt.opinion.entity.Group;
 import com.zt.opinion.framework.beans.AjaxResult;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 
@@ -120,7 +120,7 @@ public class GroupController extends BaseController {
 	@RequestMapping("listGroup")
 	@ResponseBody
 	public AjaxResult listGroup(){
-		String userAccount = "1115798334";
+		String userAccount = "18618415182";
 		if(StringUtils.isEmpty(userAccount)){
 			return fail("用户帐号不能为空");
 		}
