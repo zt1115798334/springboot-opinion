@@ -2,10 +2,16 @@ package com.zt.opinion.controller;
 
 import com.google.common.collect.Lists;
 import com.zt.opinion.base.controller.BaseController;
+import com.zt.opinion.entity.EnterpriseInfo;
 import com.zt.opinion.framework.beans.AjaxResult;
 import com.zt.opinion.mongodb.entity.Article;
 import com.zt.opinion.mongodb.service.ArticleService;
+import com.zt.opinion.service.EnterpriseInfoService;
 import com.zt.opinion.utils.ExcelImporter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +34,9 @@ public class ExcelController extends BaseController {
 
 	@Autowired
 	private ArticleService articleService;
+
+	@Resource(name = "EnterpriseInfoServiceImplmongodb")
+	private EnterpriseInfoService enterpriseInfoService;
 
 	private List<String> filaPathList = Lists.newArrayList();
 
@@ -170,5 +181,78 @@ public class ExcelController extends BaseController {
 			System.out.println("文件不存在!");
 		}
 	}
+	/**
+	 * <p>Description: 导出企业信息</p>
+	 *
+	 * @param file
+	 * @throws Exception
+	 * @author zhangtong
+	 * @date 2017年6月28日
+	 */
+	@RequestMapping("exprotEnterpriseInfoList")
+	@ResponseBody
+	public AjaxResult exprotEnterpriseInfoList(@RequestParam("fileName") MultipartFile file) throws IOException {
+		if (null == file) {
+			return fail("导入文件为空，请选择文件");
+		}
+		String fileName = file.getOriginalFilename(); // //获取文件名
+		if (!isExcel(fileName)) {
+			return fail("导入文件必须为excel文件，请重新上传文件");
+		}
+		List<EnterpriseInfo> enterpriseInfoList = Lists.newArrayList();
+		StringBuilder message = new StringBuilder("操作结果如下：");
+		Workbook book = new ExcelImporter(fileName).getWorkbook(file.getInputStream());
+		if (book != null) {
+			Sheet sheet = book.getSheetAt(1);
+			int firstRow = sheet.getFirstRowNum();
+			int lastRow = sheet.getLastRowNum();
+			// 除去标题行
+			for (int i = firstRow + 1; i < lastRow + 1; i++) {
+				Row row = sheet.getRow(i);
+				int firstCell = row.getFirstCellNum();
+				int lastCell = row.getLastCellNum();
+				int rownum = (i + 1);
 
+				boolean isAdd = true;
+				EnterpriseInfo enterpriseInfo = new EnterpriseInfo();
+				for (int j = firstCell; j < lastCell; j++) {
+					Cell cell = row.getCell(j);
+					String value = "";
+					if (cell != null) {
+						if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+							value = cell.getStringCellValue();
+						}
+						if (j == 0) {
+							//公司名称
+							enterpriseInfo.setEnterpriseName(value);
+							//公司简称
+							if (value.endsWith("有限责任公司")){
+								enterpriseInfo.setEnterpriseAbbreviation(value.substring(0,value.lastIndexOf("有限责任公司")));
+							}
+							else if (value.endsWith("有限公司")){
+								enterpriseInfo.setEnterpriseAbbreviation(value.substring(0,value.lastIndexOf("有限公司")));
+							}
+						}
+						if (j == 1) {
+							//法人
+							enterpriseInfo.setLegalPerson(value);
+						}
+						if (j == 2) {
+							//经营范围
+							enterpriseInfo.setBusinessScope(value);
+						}
+						if (j == 3) {
+							//注册资本
+							enterpriseInfo.setRegisteredCapital(value);
+						}
+
+					}
+				}
+				enterpriseInfoList.add(enterpriseInfo);
+			}
+		}
+
+		enterpriseInfoService.batchAdd(enterpriseInfoList);
+		return success(message);
+	}
 }
