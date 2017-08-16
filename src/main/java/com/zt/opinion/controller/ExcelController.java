@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +34,7 @@ public class ExcelController extends BaseController {
 	@Autowired
 	private ArticleService articleService;
 
-	@Resource(name = "EnterpriseInfoServiceImplmongodb")
+	@Autowired
 	private EnterpriseInfoService enterpriseInfoService;
 
 	private List<String> filaPathList = Lists.newArrayList();
